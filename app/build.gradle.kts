@@ -1,14 +1,15 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("kotlin-parcelize")
 }
 
 android {
-    namespace = "com.example.testing"
-    compileSdk = 34
+    namespace = "com.unir.calculadorasalarioneto"
+    compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.testing"
+        applicationId = "com.unir.calculadorasalarioneto"
         minSdk = 29
         targetSdk = 34
         versionCode = 1

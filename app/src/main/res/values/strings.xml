@@ -1,4 +1,22 @@
 <resources>
-    <string name="app_name">Testing</string>
-    <string name="calculate">Calcular</string>
+    <string name="app_name">CalculadoraSalarioNeto</string>
+    <string name="calculadora">CALCULADORA</string>
+    <string name="salarioBruto">Salario bruto anual</string>
+    <string name="introduzca_sba">Introduzca SBA</string>
+    <string name="numeroPagas">Número de Pagas</string>
+    <string name="edad">Edad</string>
+    <string name="grupoProfesional">Grupo profesional</string>
+    <string name="gradoDiscapacidad">Grado  discapacidad</string>
+    <string name="estadoCivil">Estado civil</string>
+    <string name="numeroHijos">Número de hijos</string>
+    <string name="calcular">Calcular</string>
+    <string name="resultados">Resultados</string>
+
+
+    <string name="salarioBrutoMensual">Salario bruto </string>
+    <string name="salarioNeto">Salario Neto </string>
+    <string name="retencionIrpf">Retención IRPF </string>
+    <string name="deducciones">Deducciones </string>
+    <string name="atras">Atrás </string>
+
 </resources>
