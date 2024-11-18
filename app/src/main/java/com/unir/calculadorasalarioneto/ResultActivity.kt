@@ -5,8 +5,7 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+
 
 
 class ResultActivity : AppCompatActivity() {
@@ -14,20 +13,15 @@ class ResultActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_result)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-        //Recogemos el textView
 
+        //Recogemos el textView
         val tvSalarioBruto = findViewById<TextView>(R.id.resultadoSalarioBruto);
         val tvSalarioNeto = findViewById<TextView>(R.id.resultadoNeto);
         val tvIrpf = findViewById<TextView>(R.id.resultadoIrpf);
         val tvDeducciones = findViewById<TextView>(R.id.resultadoDeducciones);
 
 
-        //Recoger los putExtra
+        //Recogemos los putExtra de la actividad anterior
         @Suppress("DEPRECATION")
         val salarioData = intent.getSerializableExtra("salarioData") as? SalarioModel;
         println(salarioData.toString());
@@ -39,13 +33,12 @@ class ResultActivity : AppCompatActivity() {
         tvDeducciones.text = salarioData!!.deducciones.toString();
 
 
+        // BOTÓN BACK:  para volver a la actividad principal
         findViewById<androidx.appcompat.widget.AppCompatButton>(R.id.atras).setOnClickListener {
-            println("Volviendo atrás");
             val intent = Intent(this, MainActivity::class.java);
             intent.putExtra("salarioData", salarioData);
             intent.putExtra("restoreData", true);
             startActivity(intent);
         }
-
     }
 }
