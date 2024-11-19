@@ -9,6 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 
 
 class ResultActivity : AppCompatActivity() {
+    companion object{
+        const val SALARY_KEY = "SALARY_KEY";
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -23,7 +27,7 @@ class ResultActivity : AppCompatActivity() {
 
         //Recogemos los putExtra de la actividad anterior
         @Suppress("DEPRECATION")
-        val salarioData = intent.getSerializableExtra("salarioData") as? SalarioModel;
+        val salarioData = intent.getSerializableExtra(SALARY_KEY) as? SalarioModel;
         println(salarioData.toString());
 
 
@@ -36,8 +40,7 @@ class ResultActivity : AppCompatActivity() {
         // BOTÓN BACK:  para volver a la actividad principal
         findViewById<androidx.appcompat.widget.AppCompatButton>(R.id.atras).setOnClickListener {
             val intent = Intent(this, MainActivity::class.java);
-            intent.putExtra("salarioData", salarioData);
-            intent.putExtra("restoreData", true);
+            intent.putExtra(SALARY_KEY, salarioData);
             startActivity(intent);
         }
     }

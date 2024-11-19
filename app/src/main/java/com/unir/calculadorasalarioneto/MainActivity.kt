@@ -1,6 +1,7 @@
 package com.unir.calculadorasalarioneto
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -9,18 +10,20 @@ import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 
-    // Si no se especifican, numero Hijos y grado de discapacidad se inicializarán en 0.
-    // El resto de campos se inicializarán en nulo (vamos a forzar a que sean OBLIGATORIOS).
-    var salarioBruto: Double? = null;
-    var numeroPagas: Int? = 12;
-    var numeroHijos:Int? = 0;
-    var gradoDiscapacidad:Double? = 0.0;
-    var edad : Int?= null;
-    var grupoProfesional : Int? = null;
-    var estadoCivil: String = "Soltero";
+    //Creacion de un companion object que es accesible desde todas las activities (equivalente a un atributo estático de Java)
+    //Creo IMC_KEY para asignar el valor del extra en el intent
+    companion object{
+        const val SALARY_KEY = "SALARY_KEY"
+    }
 
-    // Declaramos las propiedades de nuestra actividad, pero usamos lateinit para indicar que las inicializaremos después.
+    // Vamos a encapsular todos los datos y operaciones dentro de nuestra clase SalarioModel
     lateinit var salarioData: SalarioModel;
+
+    //Botones y otros elementos visuales
+    private lateinit var resetButton:Button;
+    private lateinit var calculateButton:Button;
+
+    //Campos del formulario
     private lateinit var salarioBrutoEditText: EditText;
     private lateinit var numeroPagasEditText: EditText;
     private lateinit var numeroHijosEditText: EditText;
@@ -34,9 +37,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState);
         enableEdgeToEdge();
         setContentView(R.layout.activity_main);
-
-        // Asignamos un valor a cada propiedad
         this.salarioData =  SalarioModel();
+
+        //Definimos 3 metodos (tomemoslo como un buen patron)
+        initComponents() //componentes visuales
+        initListeners() // event listeners
+        initUI() //Configuraciones visuales
+    }
+
+
+    //Buscamos los elementos visuales por su id y se los asignamos a las variables creadas al principio
+    private fun initComponents() {
         this.salarioBrutoEditText = findViewById<EditText>(R.id.edtSalarioBrutoAnual);
         this.numeroPagasEditText = findViewById<EditText>(R.id.edtNumeroPagas);
         this.numeroHijosEditText = findViewById<EditText>(R.id.edtNumerHijos);
@@ -45,94 +56,114 @@ class MainActivity : AppCompatActivity() {
         this.grupoProfesionalEditText = findViewById<EditText>(R.id.edtGrupoProfesional);
         this.estadoCivilEditText = findViewById<EditText>(R.id.edtEstadoCivil);
 
+        // Inicialización de nuestros botones
+        this.resetButton = findViewById<androidx.appcompat.widget.AppCompatButton>(R.id.reset);
+        this.calculateButton = findViewById<androidx.appcompat.widget.AppCompatButton>(R.id.calcularButton);
 
-        // BOTÓN DE RESET: restablecemos los campos
-        findViewById<androidx.appcompat.widget.AppCompatButton>(R.id.reset).setOnClickListener {
-            this.salarioBrutoEditText.setText("");
-            this.numeroPagasEditText.setText("");
-            this.gradoDiscapacidadEditText.setText("");
-            this.numeroHijosEditText.setText("");
-            this.grupoProfesionalEditText.setText("");
-            this.edadEditText.setText("");
-            println("Reseteando campos");
+    }
 
-        }
-
-        // BOTÓN DE CALCULAR: transición a la siguiente actividad
-        findViewById<androidx.appcompat.widget.AppCompatButton>(R.id.calcularButton).setOnClickListener {
-            // CAMPOS OBLIGATORIOS
-            this.salarioBruto = salarioBrutoEditText.text.toString().toDoubleOrNull();
-            this.edad = edadEditText.text.toString().toIntOrNull();
-            this.grupoProfesional = this.grupoProfesionalEditText.text.toString().toIntOrNull();
-            this.estadoCivil = this.estadoCivilEditText.text.toString()
-
-            // CAMPOS CON VALOR POR DEFECTO
-            this.numeroPagas = numeroPagasEditText.text.toString().toIntOrNull() ?: 12;
-            this.numeroHijos = numeroHijosEditText.text.toString().toIntOrNull() ?: 0;
-            this.gradoDiscapacidad = gradoDiscapacidadEditText.text.toString().toDoubleOrNull() ?: 0.0;
-
-            if (validarFormulario())  {
-                salarioData.salarioBruto = this.salarioBruto as Double;
-                salarioData.numeroPagas = this.numeroPagas as Int;
-                salarioData.numeroHijos = this.numeroHijos as Int;
-                salarioData.gradoDiscapacidad = this.gradoDiscapacidad as Double;
-                salarioData.edad = this.edad as Int;
-                salarioData.estadoCivil = this.estadoCivil as String;
-                salarioData.grupoProfesional = this.grupoProfesional as Int;
-
-                // Llamamos a la función para realizar los cálculos
-                salarioData.calcularDatosSalario();
-
-                //Navega a la siguiente View pasándole los datos que queremos llevar
-                val intent = Intent(this, ResultActivity::class.java);
-                intent.putExtra("salarioData", salarioData);
-                println("Salario Data: " + salarioData.toString());
-                startActivity(intent);
+    //Generamos los listenners de los eventos que necesitamos
+    private fun initListeners() {
+        this.calculateButton.setOnClickListener {
+            if (validateForm()){
+                calculateResult();
+                navigateToResult();
             }
+        }
+        this.resetButton.setOnClickListener {
+            resetAll();
         }
     }
 
-    // Función para remotar la actividad principal
+
+    //Funcion para configurar y actualizar los elementos visuales: cardview genero y textos peso y edad
+    private fun initUI() {
+        TODO("Not yet implemented")
+        // Por ejemplo, si pinchamos un botón y queremos que visualmente se actualice, sería aquí.
+
+    }
+
+
+
+    // Función para retomar la actividad principal después de salir de ella
     override fun onResume() {
-        super.onResume()
-        println("Volvemos a la pantalla principal")
+        super.onResume();
+        println("Volvemos a la pantalla principal");
 
         // Recuperamos salarioData desde el Intent
         @Suppress("DEPRECATION")
-        val salarioData = intent.getSerializableExtra("salarioData") as? SalarioModel
+        val salarioData = intent.getSerializableExtra("SALARY_KEY") as? SalarioModel;
 
         // Solo establecemos valores si salarioData no es nulo
         if (salarioData != null) {
-            println("Recuperamos los datos previos: $salarioData")
-
-            salarioBrutoEditText.setText(salarioData.salarioBruto.toString())
-            numeroPagasEditText.setText(salarioData.numeroPagas.toString())
-            numeroHijosEditText.setText(salarioData.numeroHijos.toString())
-            gradoDiscapacidadEditText.setText(salarioData.gradoDiscapacidad.toString())
+            println("Recuperamos los datos previos: $salarioData");
+            salarioBrutoEditText.setText(salarioData.salarioBruto.toString());
+            numeroPagasEditText.setText(salarioData.numeroPagas.toString());
+            numeroHijosEditText.setText(salarioData.numeroHijos.toString());
+            gradoDiscapacidadEditText.setText(salarioData.gradoDiscapacidad.toString());
         } else {
-            println("No se encontraron datos previos")
+            println("No se encontraron datos previos");
         }
     }
 
-    fun validarFormulario(): Boolean {
-        var validadorDeCampos : Boolean = true;
+
+
+    private fun calculateResult() {
+        // CAMPOS OBLIGATORIOS
+        this.salarioData.salarioBruto = salarioBrutoEditText.text.toString().toDoubleOrNull()!!;
+        this.salarioData.edad = edadEditText.text.toString().toIntOrNull()!!;
+        this.salarioData.grupoProfesional = this.grupoProfesionalEditText.text.toString().toIntOrNull()!!;
+        this.salarioData.estadoCivil = this.estadoCivilEditText.text.toString();
+
+        // CAMPOS CON VALOR POR DEFECTO
+        this.salarioData.numeroPagas = numeroPagasEditText.text.toString().toIntOrNull() ?: 12;
+        this.salarioData.numeroHijos = numeroHijosEditText.text.toString().toIntOrNull() ?: 0;
+        this.salarioData.gradoDiscapacidad =
+            gradoDiscapacidadEditText.text.toString().toDoubleOrNull() ?: 0.0;
+
+        // Llamamos a la función para realizar los cálculos
+        salarioData.calcularDatosSalario();
+    }
+
+    //Funcion para navegar a la siguiente activity
+    private fun navigateToResult() {
+        val intent = Intent(this, ResultActivity::class.java);
+        intent.putExtra("SALARY_KEY", this.salarioData);
+        this.startActivity(intent);
+    }
+
+
+    /** Retorna true si los campos están validados correctamente */
+    private fun validateForm(): Boolean {
+        var isValid : Boolean = true;
         var camposObligatorios = arrayOf(
-            this.salarioBruto,
-            this.edad,
-            this.grupoProfesional
+            this.salarioBrutoEditText.text.toString().toDoubleOrNull(),
+            this.edadEditText.text.toString().toIntOrNull(),
+            this.grupoProfesionalEditText.text.toString().toIntOrNull()
         );
         camposObligatorios.forEachIndexed { index, valor ->
             if (valor == null) {
                 println("Valor nulo encontrado en el índice $index")
-                salarioBrutoEditText.error = "Campo Obligatorio";
-                edadEditText.error = "Campo obligatorio";
-                grupoProfesionalEditText.error = "Campo obligatorio";
-                validadorDeCampos = false;
+                this.salarioBrutoEditText.error = "Campo Obligatorio";
+                this.edadEditText.error = "Campo obligatorio";
+                this.grupoProfesionalEditText.error = "Campo obligatorio";
+                isValid = false;
             }
         }
+        return isValid;
+    }
 
-        if (this.estadoCivil == "") estadoCivil = "Soltero";
-        return validadorDeCampos;
+
+    /** Resetea todos los campos del formulario */
+    private fun resetAll(){
+        this.salarioBrutoEditText.setText("");
+        this.numeroPagasEditText.setText("");
+        this.gradoDiscapacidadEditText.setText("");
+        this.numeroHijosEditText.setText("");
+        this.grupoProfesionalEditText.setText("");
+        this.edadEditText.setText("");
+        println("Reseteando campos");
+
     }
 
 }
