@@ -3,9 +3,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,6 +23,10 @@ class MainActivity : AppCompatActivity() {
     //Botones y otros elementos visuales
     private lateinit var resetButton:Button;
     private lateinit var calculateButton:Button;
+    private lateinit var plusProfButton: FloatingActionButton;
+    private lateinit var minusProfButton: FloatingActionButton;
+    private lateinit var plusHijosButton: FloatingActionButton;
+    private lateinit var minusHijosButton: FloatingActionButton;
 
     //Campos del formulario
     private lateinit var salarioBrutoEditText: EditText;
@@ -30,7 +35,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var gradoDiscapacidadEditText: EditText;
     private lateinit var edadEditText:EditText;
     private lateinit var grupoProfesionalEditText:EditText;
-    private lateinit var estadoCivilEditText:EditText;
+    private lateinit var estadoCivilSpinner: Spinner;
+
+    // Otras propieades
+    private  var currentProfValue : Int = 1;
+    private  var currentHijosValue : Int = 0;
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,16 +60,19 @@ class MainActivity : AppCompatActivity() {
     private fun initComponents() {
         this.salarioBrutoEditText = findViewById<EditText>(R.id.edtSalarioBrutoAnual);
         this.numeroPagasEditText = findViewById<EditText>(R.id.edtNumeroPagas);
-        this.numeroHijosEditText = findViewById<EditText>(R.id.edtNumerHijos);
+        this.numeroHijosEditText = findViewById<EditText>(R.id.edtNumeroHijos);
         this.gradoDiscapacidadEditText = findViewById<EditText>(R.id.edtGradoDiscapacidad);
         this.edadEditText = findViewById<EditText>(R.id.edtEdad);
         this.grupoProfesionalEditText = findViewById<EditText>(R.id.edtGrupoProfesional);
-        this.estadoCivilEditText = findViewById<EditText>(R.id.edtEstadoCivil);
+        this.estadoCivilSpinner = findViewById<Spinner>(R.id.spinnerEstadoCivil);
 
         // Inicialización de nuestros botones
         this.resetButton = findViewById<androidx.appcompat.widget.AppCompatButton>(R.id.reset);
         this.calculateButton = findViewById<androidx.appcompat.widget.AppCompatButton>(R.id.calcularButton);
-
+        this.plusProfButton = findViewById<FloatingActionButton>(R.id.btnPlustProf);
+        this.minusProfButton = findViewById<FloatingActionButton>(R.id.btnMinusProf);
+        this.plusHijosButton = findViewById<FloatingActionButton>(R.id.btnPlusHijos);
+        this.minusHijosButton = findViewById<FloatingActionButton>(R.id.btnMinusHijos);
     }
 
     //Generamos los listenners de los eventos que necesitamos
@@ -70,17 +83,41 @@ class MainActivity : AppCompatActivity() {
                 navigateToResult();
             }
         }
+
+        this.plusHijosButton.setOnClickListener{
+            this.currentHijosValue += 1;
+            changeHijos();
+        }
+
+        this.minusHijosButton.setOnClickListener {
+            this.currentHijosValue -= 1;
+            changeHijos();
+        }
+
+        this.plusProfButton.setOnClickListener {
+            this.currentProfValue += 1;
+            changeProf();
+        }
+
+        this.minusProfButton.setOnClickListener{
+            this.currentProfValue -= 1;
+            changeProf();
+        }
+
+
         this.resetButton.setOnClickListener {
             resetAll();
         }
     }
 
 
+
     //Funcion para configurar y actualizar los elementos visuales: cardview genero y textos peso y edad
     private fun initUI() {
-        TODO("Not yet implemented")
         // Por ejemplo, si pinchamos un botón y queremos que visualmente se actualice, sería aquí.
-
+        println("Implementado UI...");
+        changeHijos();
+        changeProf();
     }
 
 
@@ -101,6 +138,8 @@ class MainActivity : AppCompatActivity() {
             numeroPagasEditText.setText(salarioData.numeroPagas.toString());
             numeroHijosEditText.setText(salarioData.numeroHijos.toString());
             gradoDiscapacidadEditText.setText(salarioData.gradoDiscapacidad.toString());
+            grupoProfesionalEditText.setText(salarioData.grupoProfesional.toString());
+            edadEditText.setText(salarioData.edad.toString());
         } else {
             println("No se encontraron datos previos");
         }
@@ -113,7 +152,7 @@ class MainActivity : AppCompatActivity() {
         this.salarioData.salarioBruto = salarioBrutoEditText.text.toString().toDoubleOrNull()!!;
         this.salarioData.edad = edadEditText.text.toString().toIntOrNull()!!;
         this.salarioData.grupoProfesional = this.grupoProfesionalEditText.text.toString().toIntOrNull()!!;
-        this.salarioData.estadoCivil = this.estadoCivilEditText.text.toString();
+        this.salarioData.estadoCivil = this.estadoCivilSpinner.selectedItem.toString()
 
         // CAMPOS CON VALOR POR DEFECTO
         this.salarioData.numeroPagas = numeroPagasEditText.text.toString().toIntOrNull() ?: 12;
@@ -163,8 +202,24 @@ class MainActivity : AppCompatActivity() {
         this.grupoProfesionalEditText.setText("");
         this.edadEditText.setText("");
         println("Reseteando campos");
-
     }
+
+    private fun changeProf() {
+        println("Cambiando grupo profesional: ${this.currentProfValue}");
+        if (this.currentProfValue < 1 || this.currentProfValue > 11 ){
+            this.currentProfValue =1;
+        }
+        this.grupoProfesionalEditText.setText(this.currentProfValue.toString());
+    }
+
+    private fun changeHijos() {
+        println("Cambiando número hijos ${this.currentHijosValue}");
+        if (this.currentHijosValue < 0 ){
+            this.currentHijosValue = 0;
+        }
+        this.numeroHijosEditText.setText(this.currentHijosValue.toString());
+    }
+
 
 }
 

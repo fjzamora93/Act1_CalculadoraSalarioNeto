@@ -8,53 +8,32 @@
     tools:context=".MainActivity"
     android:background="@color/white">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primary_light"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <FrameLayout
-            android:id="@+id/cabecera_container"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@color/primary_light">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="sans-serif-light"
-                android:text="@string/calculadora"
-                android:textAlignment="center"
-                android:textColor="@color/dark_gray"
-                android:textSize="34sp"
-                android:textStyle="bold" />
-
-        </FrameLayout>
-    </LinearLayout>
 
 
 
     <!--             BOTÓN                -->
     <LinearLayout
+        android:id="@+id/botonMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+
+        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="20dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="30dp">
 
         <!-- Primer botón (calcular) -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/calcularButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="4"
             android:backgroundTint="@color/primary_light"
+            android:drawableStart="@drawable/calculate"
             android:padding="12dp"
+            android:paddingVertical="5dp"
             android:text="@string/calcular"
             android:textColor="@color/white"
             android:textSize="18sp" />
@@ -62,17 +41,15 @@
         <!-- Segundo botón (reset) -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/reset"
-            android:layout_width="60dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:backgroundTint="@color/primary_light"
-            android:drawableStart="@drawable/baseline_restart_alt_24"
+            android:drawableStart="@drawable/restart"
             android:padding="12dp"
             android:text="-"
-            android:textColor="@color/white"
-            android:textSize="0sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+            android:textColor="@color/invisible"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
@@ -82,150 +59,237 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp"
+        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginHorizontal="5dp">
 
-        <!-- Campo Salario Bruto -->
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/viewWeight"
+            android:layout_width="320dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="32dp"
+            app:cardBackgroundColor="@color/primary_light"
+            app:cardCornerRadius="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            android:layout_gravity="center_horizontal"
+            app:layout_constraintTop_toBottomOf="parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                android:orientation="vertical">
+
+            <!-- Campo Salario Bruto -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="10dp"
+                >
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:paddingEnd="8dp"
+                    android:text="@string/salarioBruto"
+                    android:textSize="20sp"
+                    android:textColor="@color/primary"/>
+                <EditText
+                    android:id="@+id/edtSalarioBrutoAnual"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:hint="€/año"
+                    android:inputType="numberDecimal"
+                    android:textSize="20sp"
+                    android:background="@color/white"
+                    android:textAlignment="center"/>
+            </LinearLayout>
+
+            <!-- Campo Número de Pagas -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="2"
+                    android:paddingEnd="8dp"
+                    android:text="@string/numeroPagas"
+                    android:textColor="@color/primary"
+                    android:textSize="20sp" />
+                <EditText
+                    android:id="@+id/edtNumeroPagas"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:layout_weight="1"
+                    android:hint="12"
+                    android:inputType="number"
+                    android:textSize="20sp"
+                    android:background="@color/white"/>
+            </LinearLayout>
+
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:paddingEnd="8dp"
-                android:text="@string/salarioBruto"
-                android:textSize="20sp" />
-            <EditText
-                android:id="@+id/edtSalarioBrutoAnual"
+            android:orientation="horizontal"
+            android:layout_marginVertical="10dp">
+
+            <!-- Número de HIJOS -->
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_weight="1"
-                android:hint="salario (€)"
-                android:inputType="numberDecimal"
-                android:textSize="20sp" />
+                android:orientation="vertical"
+
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/numeroHijos"
+                    android:textSize="18sp"
+                    android:textColor="@color/primary"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingBottom="8dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/btnMinusHijos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/baseline_remove_circle_24"/>
+                    <EditText
+                        android:id="@+id/edtNumeroHijos"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:hint="0"
+                        android:inputType="number"
+                        android:textSize="20sp"
+                        android:layout_gravity="center_horizontal"
+                        android:textAlignment="center"/>
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/btnPlusHijos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/baseline_add_circle_24" />
 
 
+                </LinearLayout>
+            </LinearLayout>
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="1dp"
+                android:layout_height="80dp"
+                android:layout_margin="10dp"
+                android:background="?android:attr/listDivider" />
 
+            <!-- Grupo Profesional -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/grupoProfesional"
+                    android:textSize="18sp"
+                    android:textColor="@color/primary"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingBottom="8dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/btnMinusProf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/baseline_remove_circle_24"/>
+                    <EditText
+                        android:id="@+id/edtGrupoProfesional"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:hint="0"
+                        android:inputType="number"
+                        android:textSize="20sp"
+                        android:layout_gravity="center_horizontal"
+                        android:textAlignment="center"/>
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/btnPlustProf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/baseline_add_circle_24" />
+                </LinearLayout>
+            </LinearLayout>
 
         </LinearLayout>
 
-        <!-- Campo Número de Pagas -->
+
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_margin="5dp"
+            android:background="?android:attr/listDivider" />
+
+
+
+
+
+    <!-- Edad y grupo profesional-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            >
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="2"
                 android:layout_gravity="center_vertical"
-                android:paddingEnd="8dp"
-                android:text="@string/numeroPagas"
-                android:textSize="20sp" />
-            <EditText
-                android:id="@+id/edtNumeroPagas"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_weight="1"
-                android:hint="NºPagas"
-                android:inputType="number"
-                android:textSize="20sp" />
-
-
-
-
-        </LinearLayout>
-
-        <!-- Edad -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:paddingEnd="8dp"
                 android:text="@string/edad"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textColor="@color/primary" />
             <EditText
                 android:id="@+id/edtEdad"
                 android:layout_width="0dp"
-
-                android:layout_height="wrap_content"
-                android:layout_marginStart="75dp"
-                android:layout_weight="1"
-                android:hint="Edad"
-                android:inputType="number"
-                android:textSize="20sp" />
-
-
-
-
-        </LinearLayout>
-
-        <!-- Campo Número de Hijos -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:paddingEnd="8dp"
-                android:text="@string/numeroHijos"
-                android:textSize="20sp" />
-            <EditText
-                android:id="@+id/edtNumerHijos"
-                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_weight="1"
-                android:hint="NºHijos"
+                android:hint="18"
                 android:inputType="number"
-                android:textSize="20sp" />
-
-
-
-
+                android:textSize="20sp"
+                android:padding="10dp"
+                android:background="@drawable/border_background"/>
         </LinearLayout>
 
-        <!-- Campo Grupo profesional-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:paddingEnd="8dp"
-                android:text="@string/grupoProfesional"
-                android:textSize="20sp" />
-            <EditText
-                android:id="@+id/edtGrupoProfesional"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_weight="1"
-                android:hint="rellenar"
-                android:inputType="number"
-                android:textSize="20sp" />
 
-
-
-
-        </LinearLayout>
 
         <!-- Campo Grupo discapacidad-->
         <LinearLayout
@@ -237,53 +301,66 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:paddingEnd="8dp"
+                android:layout_weight="1"
                 android:text="@string/gradoDiscapacidad"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textColor="@color/primary"/>
             <EditText
                 android:id="@+id/edtGradoDiscapacidad"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_weight="1"
-                android:hint="rellenar"
+                android:hint="0"
                 android:inputType="number"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:padding="10dp"
+                android:background="@drawable/border_background"/>
 
 
 
 
         </LinearLayout>
-
-        <!-- Estado civil -->
+        <!-- Estado civil mejorado -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
             android:orientation="horizontal">
+
+            <!-- Título -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:paddingEnd="8dp"
+
                 android:text="@string/estadoCivil"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textColor="@color/primary"/>
 
-            <EditText
-                android:id="@+id/edtEstadoCivil"
-                android:layout_width="0dp"
+            <!-- Spinner con estilo -->
+            <Spinner
+                android:id="@+id/spinnerEstadoCivil"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_weight="1"
-                android:hint="rellenar"
-                android:inputType="text"
-                android:textSize="20sp" />
-
-
-
+                android:entries="@array/listaEstadoCivil"
+                android:spinnerMode="dropdown"
+                android:popupBackground="@android:color/background_light"
+                android:dropDownWidth="match_parent"
+                android:backgroundTint="@color/primary_light"
+                android:dropDownVerticalOffset="20dp"
+                android:dropDownHorizontalOffset="20dp"
+                android:dropDownSelector="@android:color/holo_blue_dark"
+                android:dropDownItemStyle="@style/CustomSpinnerItemStyle"
+                android:layout_marginHorizontal="20dp"/>
         </LinearLayout>
+
+
+
     </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

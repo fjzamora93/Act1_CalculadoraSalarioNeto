@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- En res/values/styles.xml -->
+<resources>
+    <!-- Estilo para los ítems del Spinner -->
+    <style name="CustomSpinnerItemStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">36sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+</resources>

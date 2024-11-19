@@ -19,4 +19,14 @@
     <string name="deducciones">Deducciones </string>
     <string name="atras">Atrás </string>
 
+
+
+    <string-array name="listaEstadoCivil">
+        <item>Solter@</item>
+        <item>Casad@</item>
+        <item>Viud@</item>
+        <item>Es complicado</item>
+    </string-array>
+
+
 </resources>
