@@ -10,9 +10,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class MainActivity : AppCompatActivity() {
-
     //Creacion de un companion object que es accesible desde todas las activities (equivalente a un atributo estático de Java)
-    //Creo IMC_KEY para asignar el valor del extra en el intent
     companion object{
         const val SALARY_KEY = "SALARY_KEY"
     }
@@ -40,8 +38,6 @@ class MainActivity : AppCompatActivity() {
     // Otras propieades
     private  var currentProfValue : Int = 1;
     private  var currentHijosValue : Int = 0;
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState);
